@@ -1,57 +1,15 @@
-<div class="container">
-   @if (board) {   
-     <div class="board">
-    <h1>{{ board.title }}</h1>
-    <p>作成日: {{ board.created | date :'yyyy/MM/dd' }}</p>
-    <p>-------------------------------------------</p>
-    <button (click)="onAddTask()">＋ タスク追加（テスト）</button>
-    <p>-------------------------------------------</p>
-    <div class="kanban-columns">
-      <!-- To Do カラム -->
-      <div class="column">
-        <h2>To Do</h2>        
-         @for (task of board.tasks ; track board.tasks) {
-          <div class="card-wrapper">
-           @if (task.status === 'todo'){
-            <div  class="card red">
-            <h3>{{ task.title }}</h3>
-            <p>{{ task.description }}</p>
-          </div>
-           }           
+<div class="app-layout">
+      <nav class="navbar">
+        <span class="logo">KanBan</span>
+        <div class="links">
+          <!-- デバッグ用のリンク -->
+          <a routerLink="/login">Login</a>
+          <a routerLink="/dashboard">Dashboard</a>
         </div>
-         }        
-      </div>
+      </nav>
 
-      <!-- Doing カラム -->
-      <div class="column">
-        <h2>Doing</h2>
-         @for (task of board.tasks ; track board.tasks) {
-          <div  class="card-wrapper">
-           @if (task.status === 'doing'){ 
-            <div class="card blue">
-             <h3>{{ task.title }}</h3>
-             <p>{{ task.description }}</p>
-            </div>
-           }          
-        </div>
-         }       
-      </div>
-
-      <!-- Done カラム -->
-      <div class="column">
-        <h2>Done</h2>
-        @for (task of board.tasks ; track board.tasks) {
-           <div class="card-wrapper">
-           @if (task.status === 'done'){ 
-            <div class="card green">
-            <h3>{{ task.title }}</h3>
-            <p>{{ task.description }}</p>
-          </div>
-           }           
-        </div>
-        }       
-      </div>
-    </div>
-  </div>
-   }
+      <!-- 👇 ここにURLに応じたコンポーネントが表示される -->
+      <main>
+        <router-outlet></router-outlet>
+      </main>
 </div>
