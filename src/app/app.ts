@@ -1,11 +1,29 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { BoardService } from './services/boardservicen';
+import { Board } from './models/kanban.model';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss']
 })
-export class App {
-  protected readonly title = signal('kanban-app');
+export class App implements OnInit { 
+  board?: Board;
+
+  constructor(private boardService: BoardService) {}
+
+  ngOnInit(): void {
+       this.loadData();
+  }
+
+  loadData(): void {
+      this.board = this.boardService.getBoard();
+  }
+  
+  onAddTask() {
+      this.boardService.addTask('Doneの新しい追加タスク');
+      this.loadData();
+  }
 }
