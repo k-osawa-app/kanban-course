@@ -1,0 +1,19 @@
+<header class="navbar"> 
+      <div class="logo">KanBan</div>  
+                  
+        @if (authService.user$ | async; as user ) { 
+          <div>   
+           <span class="welcome-text">Hi, {{ user.displayName || user.email }}!</span>           
+            <button (click)="logout()">ログアウト</button>   
+          </div>   
+          }        
+       @else{
+        <div class="btn-primary">
+        <nav >        
+          <a routerLink="/login"  class="btn-primary" >ログイン</a>
+          <p></p>
+          <a routerLink="/signup" class="btn-primary">新規登録</a>       
+        </nav>
+        </div>
+       } 
+</header>

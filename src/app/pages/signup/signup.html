@@ -1,0 +1,52 @@
+<div class="signup-container">
+  <h2>アカウント作成</h2>
+ 
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">    
+    
+    <div class="form-group">
+      <label for="name">お名前</label>
+      <input id="name" type="text" formControlName="name" placeholder="山田 太郎">
+      
+      @if(signupForm.controls.name.touched && signupForm.controls.name.errors?.['required']){
+      <div class="error" >
+        お名前を入力してください。
+      </div>
+      } 
+    </div>
+
+    <!-- メールアドレス -->
+    <div class="form-group">
+      <label for="email">メールアドレス</label>
+      <input id="email" type="email" formControlName="email" placeholder="example@mail.com">
+      @if(signupForm.controls.email.touched && signupForm.controls.email.errors?.['email']){
+      <div class="error">
+        正しいメールアドレス形式ではありません。
+      </div>
+      }
+    </div>
+
+    <!-- パスワード -->
+    <div class="form-group">
+      <label for="password">パスワード</label>
+      <input id="password" type="password" formControlName="password" placeholder="6文字以上">
+      @if(signupForm.controls.password.touched && signupForm.controls.password.errors?.['minlength']){
+      <div class="error" >
+        パスワードは6文字以上で入力してください。
+      </div>
+      }
+    </div>
+
+    <!-- サーバーからのエラーメッセージ表示エリア -->
+    @if(errorMessage){ 
+    <div class="global-error">
+      {{ errorMessage }}
+    </div>
+    }
+
+    <!-- 登録ボタン（フォームが無効なら押せないようにする） -->
+    <button type="submit" [disabled]="signupForm.invalid">
+      登録する
+    </button>
+
+  </form>
+</div>

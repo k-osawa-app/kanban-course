@@ -1,15 +1,5 @@
-<div class="app-layout">
-      <nav class="navbar">
-        <span class="logo">KanBan</span>
-        <div class="links">
-          <!-- デバッグ用のリンク -->
-          <a routerLink="/login">Login</a>
-          <a routerLink="/dashboard">Dashboard</a>
-        </div>
-      </nav>
+<app-header/>
 
-      <!-- 👇 ここにURLに応じたコンポーネントが表示される -->
-      <main>
-        <router-outlet></router-outlet>
-      </main>
-</div>
+<main>
+  <router-outlet></router-outlet>
+</main>
