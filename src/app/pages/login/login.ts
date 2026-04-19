@@ -28,6 +28,7 @@ export class Login {
       
       this.authService.login({ email: email!, password: password! }).subscribe({
         next: () => {
+          console.log('Component: Login Complete');
           // ログイン成功したらダッシュボードへ
           this.router.navigate(['/dashboard']);
         },

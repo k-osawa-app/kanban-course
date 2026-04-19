@@ -1,0 +1,64 @@
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BoardService } from '../../services/boardservice';
+import { Task, TaskStatus } from '../../models/board.model';
+import { switchMap, map } from 'rxjs/operators';
+import { Observable,} from 'rxjs';
+import { OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+@Component({
+  selector: 'app-board',
+  imports: [CommonModule],
+  templateUrl: './boardcomponent.html',
+  styleUrl: './boardcomponent.scss',
+})
+export class BoardComponent implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute); 
+  public tasks:Task[] | undefined;
+  private tasksStream!: Subscription; // Subscriptionを保持する変数
+  private boardId='0nOrOEPVjzlqUxObcHBQ';//gzF3tTadOzO7LvcfwlNZ
+  statuses: TaskStatus[] = ['todo', 'doing', 'done']; 
+  onlyMyTasks = signal<boolean>(false); 
+
+constructor(private boardService: BoardService) {}
+
+  ngOnInit() {
+    // ServiceからObservableを受け取り、subscribeする（ここで初めて//API通信が走る）
+     this.tasksStream = this.boardService.getTasks(this.boardId).subscribe( data =>{
+     this.tasks = data;  
+    });
+   }
+
+  ngOnDestroy() {
+    // コンポーネントが破棄される時に必ずunsubscribeする（メモリリーク防止）
+    if (this. tasksStream) {
+        this.tasksStream.unsubscribe();
+     }
+    }  
+
+  tasksSignal = toSignal(this.tasksStream, { initialValue: [] });
+
+  filteredTasks = computed(() => {
+    const allTasks = this.tasksSignal();
+    const isFilterActive = this.onlyMyTasks();
+
+    if (!isFilterActive) {
+      return allTasks;
+    }
+ 
+    return allTasks.filter(t => t.assignee === 'Me'); 
+  });
+  
+  toggleFilter(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.onlyMyTasks.set(isChecked);
+  }
+
+  getTasksByStatus(status: TaskStatus) {
+    return this.filteredTasks().filter(t => t.status === status);
+  }
+ }
+}

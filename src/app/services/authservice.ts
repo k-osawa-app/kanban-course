@@ -44,7 +44,14 @@ export class AuthService {
       credentials.email,
       credentials.password
     ).then(() => {
+       const user = this.getCurrentUser(); 
+       console.log('Login Success! User Value:', user);
        return; 
+    })
+    .catch((error) => {
+        // --- 失敗時 ---
+        console.error('Login Failed:', error.code, error.message);
+        throw error; // エラーを呼び出し元（コンポーネント）に伝えるために再スロー
     });
     return from(promise);
   }
@@ -52,5 +59,10 @@ export class AuthService {
   logout(): Observable<void> {
     return from(signOut(this.auth));
   }
+
+   getCurrentUser(): User | null {
+    console.log(this.auth.currentUser);
+    return this.auth.currentUser;
+  } 
 
 }

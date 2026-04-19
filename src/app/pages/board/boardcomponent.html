@@ -1,0 +1,34 @@
+<div class="board-container">
+      
+      <!-- ローディング状態のハンドリング tasksStream$-->
+       @if( tasksSignal().length >0 ){     
+      <div class="kanban-board" >   
+        <div class="toolbar">
+        <!-- Signalsによるフィルタリング制御 -->
+        <label>
+          <input type="checkbox" 
+            [checked]="onlyMyTasks()" 
+            (change)="toggleFilter($event)" />
+          自分のみ表示
+        </label>
+      </div> 
+
+        <!-- 各カラム（ToDo, Doing, Done） -->
+         @for(status of statuses; track status){
+         <div class="column" >
+          <h3>{{ status | uppercase }}</h3>          
+          <!-- computedでフィルタリングされたタスクを表示 -->
+           @for(task of getTasksByStatus(status); track task.id ){
+           <div class="card" >
+            <h4>{{ task.title }}</h4>
+            <p>{{ task.description }}</p>
+            @if(task.assignee){
+            <small >担当: {{ task.assignee }}</small>
+            }
+           </div>
+          }
+        </div>
+         }  
+      </div>
+      }    
+</div>

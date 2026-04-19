@@ -1,0 +1,104 @@
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { BoardService } from '../../services/boardservice';
+import { Task, TaskStatus } from '../../models/board.model';
+import { switchMap, map } from 'rxjs/operators';
+import { Observable,} from 'rxjs';
+
+@Component({
+  selector: 'app-board',
+  imports: [CommonModule],
+  templateUrl: './boardcomponent.html',
+  styleUrl: './boardcomponent.scss',
+})
+export class BoardComponent implements OnInit{
+  private route = inject(ActivatedRoute);
+  //private boardService = inject(BoardService);
+  //private boardService : BoardService;
+
+  // ステータス定義（HTMLで使用）
+  statuses: TaskStatus[] = ['todo', 'doing', 'done'];
+  public tasks:Task[] | undefined;
+  
+  private boardId='0nOrOEPVjzlqUxObcHBQ';//gzF3tTadOzO7LvcfwlNZ
+
+  // ■ 1. Local State (Signal)
+  // UIの状態管理にはSignalを使用。「自分のタスクだけ表示するか」のフラグ
+  onlyMyTasks = signal<boolean>(false);
+
+  // ■ 2. Data Stream (RxJS -> Signal)
+  // URLのIDパラメータを監視し、変わるたびにFirestoreの参照先を切り替える
+
+  // private tasksStream$: Observable<Task[]> =  this.route.paramMap.pipe(
+  //   // //switchMap: IDが変わったら前の購読をキャンセルし、新しいIDで購読し直す
+  //   switchMap(params => {
+  //     const id = params.get('id');
+  //   return id ?  this.boardService.getTasks(this.boardId): [] ;    
+  //   })
+  // );  
+private tasksStream$!: Observable<Task[]>;
+//private tasksStream$: Observable<Task[]> = this.boardService.getTasks(this.boardId);
+// .subscribe({
+//   next: (tasks) => {
+//     console.log('コンポーネントで受け取ったデータ:', tasks);
+//     this.tasks = tasks;
+//   },
+//   error: (err) => {
+//     console.error('エラー発生:', err);
+//   }
+// });
+//this.tasksStream$ = this.boardService.getTasks(this.boardId);
+
+constructor(private boardService: BoardService){
+  
+}
+
+ngOnInit(): void {
+    //this.tasksStream$ = this.boardService.getTasks(this.boardId);
+  }
+
+    //    private tasksStream$: Observable<Task[]> = 
+    //   this.boardService.getTasks(this.boardId).subscribe({
+    //   next: (tasks) => {
+    //   console.log('コンポーネントで受け取ったデータ:', tasks);
+    //   this.tasks = tasks;
+    //   },
+    //   error: (err) => {
+    //   console.error('エラー発生:', err);
+    //   }                                           
+    // }) ;
+
+  
+  // RxJSのストリームをSignalに変換！
+  // これにより、テンプレートやcomputedの中で同期的な値として扱えるようになる
+  tasksSignal = toSignal(this.tasksStream$, { initialValue: [] });
+
+  // ■ 3. Derived State (Computed Signal)
+  // 「タスクデータ(tasksSignal)」と「フィルタ設定(onlyMyTasks)」""の両方を監視し、
+  // どちらかが変わったら自動的に再計算される「フィルタ済みのリスト」
+  filteredTasks = computed(() => {
+    const allTasks = this.tasksSignal();
+    const isFilterActive = this.onlyMyTasks();
+
+    if (!isFilterActive) {
+      return allTasks;
+    }
+    // ここでは簡易的に担当者が'Me'のものをフィルタリング（実際はUser IDなどで判定）
+    return allTasks.filter(t => t.assignee === 'Me'); 
+  });
+  
+
+  // UIイベントハンドラ
+  toggleFilter(event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.onlyMyTasks.set(isChecked);
+  }
+
+  // ヘルパー関数: ステータスごとにタスクを分ける
+  // computedされた filteredTasks() を使うことで、フィルタリング状態も反映される
+  getTasksByStatus(status: TaskStatus) {
+    return this.filteredTasks().filter(t => t.status === status);
+  }
+}

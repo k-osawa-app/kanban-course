@@ -1,0 +1,12 @@
+<nav>
+      <h3>My Boards</h3>
+      <!-- Async Pipe: 自動でsubscribe/unsubscribeを行う安全な方法 -->
+      <ul>
+        @if( boards$ | async; as board){
+        <li >
+          <p>board.title/p>
+           <!-- <a [routerLink]="['/board', board.id]">{{ board.title}}</a> -->
+        </li>
+        }
+      </ul>
+</nav>
