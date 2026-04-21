@@ -1,0 +1,26 @@
+<nav>
+      <h4>**タスクを表示するには下のボードをクリックします**</h4>
+      <h5>***何もないときは表示はありません***</h5>
+      <!-- Async Pipe: 自動でsubscribe/unsubscribeを行う安全な方法 -->
+       <ul>
+        <!-- 1. asyncパイプでObservableを展開し、"boards"（複数形）として受け取る -->
+        @if (boards$ | async; as boards) {          
+          <!-- 2. 受け取った配列を @for でループ処理して、1件ずつ "board" に入れる -->
+          @for (board of boards; track board.id) {
+            <li>
+              <a [routerLink]="['/board', board.id]">{{ board.title }}</a>
+            </li>
+          }
+
+        }
+      </ul>      
+</nav>
+
+<!-- <ul>
+        @for( boards$ | async; as board){
+        <li >
+          <p>board.title/p>
+           <a [routerLink]="['/board', board.id]">{{ board.title}}</a>
+        </li>
+        }
+      </ul> -->

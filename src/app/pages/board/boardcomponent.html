@@ -2,7 +2,8 @@
       
       <!-- ローディング状態のハンドリング tasksStream$-->
        @if( tasksSignal().length >0 ){     
-      <div class="kanban-board" >   
+      <div class="kanban-board" >  
+       
         <div class="toolbar">
         <!-- Signalsによるフィルタリング制御 -->
         <label>
@@ -12,7 +13,6 @@
           自分のみ表示
         </label>
       </div> 
-
         <!-- 各カラム（ToDo, Doing, Done） -->
          @for(status of statuses; track status){
          <div class="column" >

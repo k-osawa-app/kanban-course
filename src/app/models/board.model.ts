@@ -14,7 +14,7 @@ export interface Task {
 }
 
 export interface Board {
-  id?: string;
+  id: string;
   title: string;
   ownerId: string;    // 作成者のUID
   memberIds?: string[]; // //共有しているメンバーのUID配列

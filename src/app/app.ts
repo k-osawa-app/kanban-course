@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router'; // RouterLinkも追加
+import { RouterOutlet } from '@angular/router'; 
 import { Header } from "./home/header/header"; 
 
 @Component({

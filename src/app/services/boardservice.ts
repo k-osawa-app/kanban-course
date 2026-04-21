@@ -48,9 +48,10 @@ export class BoardService {
    * 特定のボード内のタスク一覧を取得
    * パス: boards/{boardId}/tasks
    */
-    getTasks(boardId: string): Observable<Task[]> {
-    const tasksRef = collection(this.firestore, `boards/${boardId}/tasks`);
-    //console.log('tasksRef :',tasksRef);
+    getTasks(boardIds: string): Observable<Task[]> {
+     console.log(boardIds); 
+    const tasksRef = collection(this.firestore, `boards/${boardIds}/tasks`);
+    console.log('tasksRef :',tasksRef);
     // 作成日順に並べる
     const q = query(tasksRef, orderBy('createdAt', 'asc'));        
     // return collectionData(q, { idField: 'id' }) as Observable<Task[]>;
@@ -60,17 +61,6 @@ export class BoardService {
       tap((tasks:any) => console.log('Firestoreから取得したデータ:', tasks))
     ) as Observable<Task[]>; 
   }
-
-  // getTasks(boardId: string): Observable<Task[]> {
-  //   const tasksRef = collection(this.firestore, `boards/${boardId}/tasks`);
-  //   // 作成日順に並べる
-  //   const q = query(tasksRef, orderBy('createdAt', 'asc'));
-    
-
-  //   console.log("q   =",q);
-    
-  //   return collectionData(q, { idField: 'id' }) as Observable<Task[]>;  //, { idField: 'id' }
-  // }
 
   /**
    * タスクの追加（Promiseを返す）
