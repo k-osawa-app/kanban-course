@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Sidebar {
   private boardService = inject(BoardService);
-  // Observableをそのままテンプレートに渡す
+  
   boards$ = this.boardService.getUserBoards();
 }
 

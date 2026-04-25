@@ -11,15 +11,19 @@ import { AuthService } from '../../services/authservice';
   styleUrl: `./header.scss`
 })
 export class Header {
-  // テンプレートからpublicでアクセスできるようにする
+ 
   public authService = inject(AuthService);
+
   private router = inject(Router);
+
   user: any;
 
   logout():void {
+
     this.authService.logout().subscribe(() => {
+
       this.router.navigate(['/login']);
-      //return true;
+     
     });
   }
 }

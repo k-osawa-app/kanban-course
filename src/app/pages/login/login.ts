@@ -18,23 +18,30 @@ export class Login {
   errorMessage = '';
 
   loginForm = this.fb.group({
+
     email: ['', [Validators.required, Validators.email]],
+
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   onSubmit() {
+
     if (this.loginForm.valid) {
+
       const { email, password } = this.loginForm.getRawValue();
       
       this.authService.login({ email: email!, password: password! }).subscribe({
+        
         next: () => {
+
           console.log('Component: Login Complete');
-          // ログイン成功したらダッシュボードへ
+         
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {
-          // エラーハンドリング（例: パスワード間違い）
+          
           this.errorMessage = 'ログインに失敗しました。入力内容を確認してください。';
+
           console.error(err);
         }
       });

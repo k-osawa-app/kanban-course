@@ -2,9 +2,8 @@
     display: flex; 
     gap: 1rem; 
     overflow-x: 
-    auto; height: 60vh; 
+    auto; height: 80vh; 
 }
-
 .column { 
     flex: 1; 
     min-width: 300px; 
@@ -12,7 +11,6 @@
     padding: 1rem; 
     border-radius: 8px; 
 }
-
 .card { 
     background: white; 
     padding: 1rem; 
