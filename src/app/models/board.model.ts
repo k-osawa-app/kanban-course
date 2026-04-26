@@ -8,11 +8,11 @@ export interface Task {
   description: string;
   status: TaskStatus;
   assignee?: string;  // 担当者のユーザー名
-  ownerId:string; //
   seqNo?: number;
   createdAt?: number; //Timestamp | undefined;  
   updatedAt?: number;//Timestamp | undefined;
 }
+//削除　ownerId:string;
 
 export interface Board {
   id: string;

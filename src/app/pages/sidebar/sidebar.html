@@ -1,16 +1,16 @@
 <nav>
       <h4>**タスクを表示するには下のボードをクリックします**</h4>
       <h5>***何もないときは表示はありません***</h5>
-      <ul>
-        
-        @if (boards$ | async; as boards) {          
-         
-          @for (board of boards; track board.id) {
+      
+       <div class="list"> 
+        <ul>     
+        @if (boards$ | async; as boards) {            
+          @for (board of boards; track board.id) {            
             <li>
               <a [routerLink]="['/board', board.id]">{{ board.title }}</a>
             </li>
           }
-
         }
-      </ul>      
+       </ul>
+      </div>      
 </nav>

@@ -7,10 +7,11 @@ import {
   where, 
   orderBy,
   doc,
-  addDoc 
+  addDoc, 
+  updateDoc
 } from '@angular/fire/firestore';
 import { Observable, tap } from 'rxjs';
-import { Board, Task } from '../models/board.model';
+import { Board, Task, TaskStatus } from '../models/board.model';
 import { AuthService } from './authservice'; 
 
 @Injectable({
@@ -46,5 +47,32 @@ export class BoardService {
     
     return addDoc(tasksRef, task);
   }
+
+  /**
+   * タスクの新規作成
+   */
+  async createTask(boardId: string, task: Omit<Task, 'id' | 'createdAt'>): Promise<void> {
+    const tasksRef = collection(this.firestore, `boards/${boardId}/tasks`);
+    const newTask: Task = {
+      ...task,
+      createdAt: Date.now(), // サーバー側で設定するのが理想ですが、今回は簡易的にここで行います
+    };
+    await addDoc(tasksRef, newTask);
+  }
+
+   /**
+   * タスクのステータス更新（ドラッグ＆ドロップ用）
+   */
+  async updateTaskStatus(boardId: string, taskId: string, newStatus: TaskStatus): Promise<void> {
+    const taskDocRef = doc(this.firestore, `boards/${boardId}/tasks/${taskId}`);
+    await updateDoc(taskDocRef, { status: newStatus });
+  }
+  // async updateTaskStatus(boardId: string, taskId: string, newStatus: TaskStatus): Promise<void> {
+  //   const path = `boards/${boardId}/tasks/${taskId}`;    
+  //   // ラッパーサービス経由でリファレンスを取得し、アップデートする
+  //   const taskDocRef = this.firestoreWrapper.getDocRef(path);
+  //   await this.firestoreWrapper.getUpdateDoc(taskDocRef, { status: newStatus });
+  // }
+
 }
 

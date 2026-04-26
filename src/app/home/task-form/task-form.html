@@ -1,0 +1,36 @@
+<p>task-form works!</p>
+
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="task-form">
+      <!-- タイトル入力 -->
+      <div class="form-group">
+        <label for="title">タイトル <span class="required">*</span></label>
+        <input id="title" type="text" formControlName="title" placeholder="タスク名を入力" />
+        @if(titleControl?.invalid || titleControl?.touched){
+           <div class="error" >
+          タイトルは必須です（3文字以上）。
+           </div>
+        }        
+      </div>
+
+      <!-- 説明入力 -->
+      <div class="form-group">
+        <label for="description">詳細</label>
+        <textarea id="description" formControlName="description" rows="3"></textarea>
+      </div>
+
+      <!-- ステータス選択 -->
+      <div class="form-group">
+        <label>初期ステータス</label>
+        <select formControlName="status">
+          <option value="todo">To Do</option>
+          <option value="doing">Doing</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button type="button" (click)="cancel.emit()">キャンセル</button>
+        <button type="submit" [disabled]="myForm.invalid">作成する</button>
+      </div>
+</form>
+

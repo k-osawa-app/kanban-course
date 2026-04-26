@@ -1,0 +1,26 @@
+.task-form { 
+    display: flex; 
+    flex-direction: 
+    column; gap: 1rem; 
+}
+.form-group { 
+    display: flex; 
+    flex-direction: column; 
+}
+.error { 
+    color: red; 
+    font-size: 0.8rem; 
+}
+.required { 
+    color: red; 
+}
+input, textarea, select { 
+    padding: 0.5rem; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+.actions { 
+    display: flex; 
+    justify-content: 
+    flex-end; gap: 0.5rem; 
+}
