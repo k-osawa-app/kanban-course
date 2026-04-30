@@ -11,12 +11,10 @@ import { SignupCredentials } from '../../models/user.model';
   templateUrl: './signup.html',
   styleUrl: './signup.scss'
 })
-export class Signup {
-  
+export class Signup {  
   private fb = inject(FormBuilder);
   private authService = inject(AuthService); 
-  private router = inject(Router);
-  
+  private router = inject(Router);  
   errorMessage: string | null = null;
  
   signupForm = this.fb.nonNullable.group({

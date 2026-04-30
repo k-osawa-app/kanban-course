@@ -10,20 +10,14 @@ import { AuthService } from '../../services/authservice';
   templateUrl: `./header.html`,
   styleUrl: `./header.scss`
 })
-export class Header {
- 
+export class Header { 
   public authService = inject(AuthService);
-
   private router = inject(Router);
-
   user: any;
 
   logout():void {
-
     this.authService.logout().subscribe(() => {
-
-      this.router.navigate(['/login']);
-     
+      this.router.navigate(['/login']);     
     });
   }
 }

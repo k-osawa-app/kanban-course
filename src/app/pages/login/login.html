@@ -1,17 +1,10 @@
 <div class="login-container">
-
       <h2>KanBan Login</h2>
-
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
         <input type="email" formControlName="email" placeholder="Email" />
-
-        <input type="password" formControlName="password" placeholder="Password" />
-        
+        <input type="password" formControlName="password" placeholder="Password" />        
         <button type="submit" [disabled]="loginForm.invalid">ログイン</button>
-
-        @if (errorMessage) {
-          
+        @if (errorMessage) {          
           <p class="error">{{ errorMessage }}</p>
         }        
       </form>

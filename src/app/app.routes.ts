@@ -22,14 +22,12 @@ export const routes: Routes = [
     loadComponent: () => 
       import('./pages/dashboard/dashboard').then(m => m.Dashboard),
     canActivate: [authGuard] 
-
   },
   {
     path: 'board/:id',
     loadComponent: () => 
       import('./pages/board-detail/board-detail').then(m => m.BoardDetail),
     canActivate: [authGuard] 
-
   },
   {
     path: '**',

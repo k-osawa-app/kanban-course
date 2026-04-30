@@ -9,10 +9,9 @@ export interface Task {
   status: TaskStatus;
   assignee?: string;  // 担当者のユーザー名
   seqNo?: number;
-  createdAt?: number; //Timestamp | undefined;  
-  updatedAt?: number;//Timestamp | undefined;
+  createdAt?: number;  
+  updatedAt?: number;
 }
-//削除　ownerId:string;
 
 export interface Board {
   id: string;

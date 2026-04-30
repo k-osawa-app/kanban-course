@@ -28,24 +28,19 @@ export class BoardComponent {
   isModalOpen = signal(false);
   public currentBoardId?: string ;
  
-  private tasksStream$: Observable<Task[]> = this.route.paramMap.pipe(
- 
+  private tasksStream$: Observable<Task[]> = this.route.paramMap.pipe( 
     switchMap(params => {
       const id = params.get('id');
-
       if (id) {     
       this.currentBoardId = id;
-      }
-         
+      }         
       return id ? this.boardService.getTasks(id) : [];            
     })
   );
 
-
   tasksSignal = toSignal(this.tasksStream$, { initialValue: [] });
 
   filteredTasks = computed(() => {
-
     const allTasks = this.tasksSignal();
     const isFilterActive = this.onlyMyTasks();
 
@@ -64,11 +59,8 @@ export class BoardComponent {
     return this.filteredTasks().filter(t => t.status === status);
   }
 
-  //------------------------
-  //------------------------
   // ヘルパー関数: ステータスごとにタスクを分ける
   // computedされた filteredTasks() を使うことで、フィルタリング状態も反映される  
-  //getTasksByStatus(status: TaskStatus)-->tasksGroupedByStatus = computed
   tasksGroupedByStatus = computed(() => {
     const tasks = this.filteredTasks();
     const grouped: Record<TaskStatus, Task[]> = { todo: [], doing: [], done:[] };
@@ -111,7 +103,7 @@ export class BoardComponent {
       // B. 別のリスト（ステータス）への移動
       const task = event.previousContainer.data[event.previousIndex];
       
-    // 1. UIを即座に更新 (Optimistic UI)
+      // 1. UIを即座に更新 (Optimistic UI)
       // Angular CDKのtransferArrayItemはローカル配列を書き換えます
       // ※注意: Firestoreのリアルタイム更新と競合する場合があるため、
       // 本格的なアプリでは「ローカル更新」と「サーバー更新」の整合性を取る設計が必要です。
@@ -121,14 +113,11 @@ export class BoardComponent {
         event.previousIndex,
         event.currentIndex,
       );
-     console.log("task.id  =",task.id);
-     console.log("this.currentBoardId  =",this.currentBoardId);
-    // 2. バックエンド更新
+     // 2. バックエンド更新
     if (task.id && this.currentBoardId) { //task.id
         this.boardService.updateTaskStatus(this.currentBoardId, task.id, targetStatus)
       .catch(err => {
-            console.error('更新失敗', err);
-            // エラー時は元の状態に戻す処理（ロールバック）を入れるのがベストプラクティスです
+            console.error('更新失敗', err);            
           });
       }
     }

@@ -23,28 +23,21 @@ export class BoardService {
 
   getUserBoards(): Observable<Board[]> {
     const user = this.authService.getCurrentUser(); 
-    if (!user) return new Observable(); 
 
-    const boardsRef = collection(this.firestore, 'boards');
-    
-    const q = query(boardsRef, where('memberIds', 'array-contains', user.uid));    
-    
+    if (!user) return new Observable(); 
+    const boardsRef = collection(this.firestore, 'boards');    
+    const q = query(boardsRef, where('memberIds', 'array-contains', user.uid));      
     return collectionData(q, { idField: 'id' }) as Observable<Board[]>;
   }
 
-  getTasks(boardIds: string): Observable<Task[]> {
-    
-    const tasksRef = collection(this.firestore, `boards/${boardIds}/tasks`);   
-   
-    const q = query(tasksRef, orderBy('createdAt', 'asc'));        
-  
+  getTasks(boardIds: string): Observable<Task[]> {    
+    const tasksRef = collection(this.firestore, `boards/${boardIds}/tasks`);      
+    const q = query(tasksRef, orderBy('createdAt', 'asc'));    
     return collectionData(q, { idField: 'id' }) as Observable<Task[]>;  
   }
 
   addTask(boardId: string, task: Task): Promise<any> {
-
-    const tasksRef = collection(this.firestore, `boards/${boardId}/tasks`);
-    
+    const tasksRef = collection(this.firestore, `boards/${boardId}/tasks`);    
     return addDoc(tasksRef, task);
   }
 
@@ -67,12 +60,5 @@ export class BoardService {
     const taskDocRef = doc(this.firestore, `boards/${boardId}/tasks/${taskId}`);
     await updateDoc(taskDocRef, { status: newStatus });
   }
-  // async updateTaskStatus(boardId: string, taskId: string, newStatus: TaskStatus): Promise<void> {
-  //   const path = `boards/${boardId}/tasks/${taskId}`;    
-  //   // ラッパーサービス経由でリファレンスを取得し、アップデートする
-  //   const taskDocRef = this.firestoreWrapper.getDocRef(path);
-  //   await this.firestoreWrapper.getUpdateDoc(taskDocRef, { status: newStatus });
-  // }
-
 }
 

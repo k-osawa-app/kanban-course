@@ -9,7 +9,6 @@ import { TaskStatus } from '../../models/board.model';
   status: AbstractControl<TaskStatus>;
 }
 
-
 @Component({
   selector: 'app-task-form',
   imports: [ ReactiveFormsModule ],
@@ -17,7 +16,7 @@ import { TaskStatus } from '../../models/board.model';
   styleUrl: './task-form.scss',
 })
 export class TaskForm {
-   private fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
 
   // 親コンポーネントへの通知用
   @Output() submitTask = new EventEmitter<{ title: string; description: string; status: TaskStatus }>();

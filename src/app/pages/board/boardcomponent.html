@@ -1,7 +1,5 @@
     <div class="board-header">
-    <!-- <h2>Board</h2> -->
-      <button (click)="isModalOpen.set(true)">+ タスク追加</button>    
-    <!-- モーダル (簡易実装) -->
+       <button (click)="isModalOpen.set(true)">+ タスク追加</button>    
     </div>
   
     @if(isModalOpen()){
@@ -16,7 +14,7 @@
       </div>
       } 
   
-  <!-- @if( tasksSignal().length >0 ){                 -->
+  @if( tasksSignal().length >0 ){                
     <div class="toolbar">        
         <label>
           <input type="checkbox" 
@@ -25,8 +23,7 @@
           自分のみ表示
     </label>
       </div>  
-       <!-- カンバンボードエリア -->
-    <!-- cdkDropListGroup: 複数のリスト間でドラッグ移動可能にするグループ化 -->
+       <!-- カンバンボードエリア -->   
     <div class="kanban-board" cdkDropListGroup>     
       @for(status of statuses; track status){
         <div class="column" >
@@ -41,10 +38,7 @@
            <div class="card" cdkDrag>
             <h4>{{ task.title }}</h4>
             <p>{{ task.description }}</p>
-            <p>{{ task.assignee }}</p>
-            <!-- @if(task.assignee){               -->
-            <!-- <small >担当: {{ task.assignee }}</small> -->
-             <!-- } -->
+            <p>{{ task.assignee }}</p>           
              <div *cdkDragPlaceholder class="custom-placeholder">In Here</div>
            </div>
           }
@@ -52,4 +46,4 @@
       </div> 
      }
     </div>
-  <!-- } -->
+  }
