@@ -14,3 +14,16 @@
 .btn-primary{
    color: white; 
 }
+.navbar.offline { 
+    border-bottom: 3px solid #ffcc00; }
+.offline-badge { 
+    background: #ffcc00; 
+    color: #333; 
+    font-size: 0.8rem; 
+    padding: 0.2rem 1rem; 
+    position: absolute; 
+    top: 100%; 
+    left: 0; 
+    right: 0; 
+    text-align: center;
+}

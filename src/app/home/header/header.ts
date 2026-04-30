@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/authservice';
+import { Network } from '../../services/network';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { AuthService } from '../../services/authservice';
 export class Header { 
   public authService = inject(AuthService);
   private router = inject(Router);
-  user: any;
+  public network = inject(Network);
 
   logout():void {
     this.authService.logout().subscribe(() => {
