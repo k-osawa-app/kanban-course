@@ -11,8 +11,8 @@ import {
   provideFirestore } from '@angular/fire/firestore';
 import { provideServiceWorker } from '@angular/service-worker';
 
-const firebaseConfig = {
-   // apiKey: "",
+const firebaseConfig = {  
+  // apiKey: "",
   // authDomain: "",
   // projectId: "",
   // storageBucket: "",

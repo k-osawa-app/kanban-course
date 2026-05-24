@@ -6,6 +6,6 @@ import { Injectable } from '@angular/core';
 export class Logger {
   log(message: string) {
     const timestamp = new Date().toLocaleTimeString();
-    console.log(`[KanBan-app ${timestamp}]: ${message}`);
+    console.log(`[KanBan-Course ${timestamp}]: ${message}`);
   }
 }

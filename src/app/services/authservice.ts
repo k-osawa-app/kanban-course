@@ -10,23 +10,24 @@ import {
 } from '@angular/fire/auth';
 import { Observable, from, map } from 'rxjs';
 import { LoginCredentials, SignupCredentials } from '../models/user.model'; 
-
+import { FirebaseAuthWrapper } from './wrapper/firebaseauth-wrapper'; // 追加
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {  
   private auth: Auth = inject(Auth);  
+  private fireAuthWrapper = inject(FirebaseAuthWrapper); // 追加
   readonly user$: Observable<User | null> = authState(this.auth);  
   readonly isLoggedIn$: Observable<boolean> = this.user$.pipe(
     map(user => !!user)
   );
 
  signup(credentials: SignupCredentials): Observable<void> {    
-    const promise = createUserWithEmailAndPassword(
+    const promise = this.fireAuthWrapper.getCreateUserWithEmailAndPassword(
       this.auth,
       credentials.email,
       credentials.password
     ).then(userCredential => {
-      return updateProfile(userCredential.user, {
+      return this.fireAuthWrapper.getUpdateProfile(userCredential.user, {
         displayName: credentials.name
       });
     });
@@ -35,7 +36,7 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<void> {
-    const promise = signInWithEmailAndPassword(
+    const promise = this.fireAuthWrapper.getSignInWithEmailAndPassword(
       this.auth,
       credentials.email,
       credentials.password
