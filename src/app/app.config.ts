@@ -11,13 +11,13 @@ import {
   provideFirestore } from '@angular/fire/firestore';
 import { provideServiceWorker } from '@angular/service-worker';
 
-const firebaseConfig = {  
-  // apiKey: "",
-  // authDomain: "",
-  // projectId: "",
-  // storageBucket: "",
-  // messagingSenderId: "",
-  // appId: ""
+const firebaseConfig = {       
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 export const appConfig: ApplicationConfig = {

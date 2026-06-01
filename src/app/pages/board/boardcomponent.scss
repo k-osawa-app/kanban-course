@@ -1,8 +1,9 @@
 .kanban-board { 
     display: flex; 
     gap: 1rem; 
-    overflow-x: 
-    auto; height: 80vh; 
+    overflow-x: auto; 
+    overflow-y: auto; 
+    height: 80vh; 
 }
 .column { 
     flex: 1; 

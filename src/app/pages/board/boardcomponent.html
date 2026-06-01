@@ -1,4 +1,4 @@
-    <div class="board-header">
+   <div class="board-header">
        <button (click)="isModalOpen.set(true)">+ タスク追加</button>    
     </div>
   
@@ -22,6 +22,7 @@
             (change)="toggleFilter($event)" />
           自分のみ表示
     </label>
+     
       </div>  
        <!-- カンバンボードエリア -->   
     <div class="kanban-board" cdkDropListGroup>     
@@ -30,17 +31,23 @@
             <h3>{{ status | uppercase }}</h3>  
           <div 
           cdkDropList           
-          [cdkDropListData]="tasksGroupedByStatus()[status]"
+          [cdkDropListData]="tasksGroupedByStatus()[status] || []"
           (cdkDropListDropped)="drop($event, status)"
            class="task-list">             
 
-          @for(task of getTasksByStatus(status); track task.id ){
+          @for(task of (tasksGroupedByStatus()[status] || []); track task.id ){
            <div class="card" cdkDrag>
             <h4>{{ task.title }}</h4>
             <p>{{ task.description }}</p>
-            <p>{{ task.assignee }}</p>           
+            <div class="card-footer">
+              <span class="assignee">{{ task.assignee }}</span>
+            </div>
              <div *cdkDragPlaceholder class="custom-placeholder">In Here</div>
            </div>
+          } @empty {
+            <div class="empty-placeholder">
+              タスクはありません
+            </div>
           }
          </div>        
       </div> 

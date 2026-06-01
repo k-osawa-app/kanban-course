@@ -8,6 +8,7 @@ export interface Task {
   description: string;
   status: TaskStatus;
   assignee?: string;  // 担当者のユーザー名
+  
   seqNo?: number;
   createdAt?: number;  
   updatedAt?: number;
