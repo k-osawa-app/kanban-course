@@ -22,8 +22,7 @@
 .task-list { 
     min-height: 100px; 
     flex-grow: 1;
-} /* 空でもドロップできるように高さを確保 */
-/* CDKのアニメーション用クラス */
+} 
 .cdk-drag-preview { 
     box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
 }

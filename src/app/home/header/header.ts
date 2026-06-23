@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/authservice';
@@ -9,8 +9,7 @@ import { Network } from '../../services/network';
   selector: 'app-header',
   imports: [CommonModule, RouterLink], 
   templateUrl: `./header.html`,
-  styleUrl: `./header.scss`,
-  //changeDetection: ChangeDetectionStrategy.Eager
+  styleUrl: `./header.scss`
 })
 export class Header { 
   public authService = inject(AuthService);

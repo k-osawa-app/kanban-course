@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { Network } from './network'; // ※実際のファイルパスに合わせて調整してください
+import { Network } from './network'; 
 
 describe('Network Service', () => {
   let service: Network;
 
   beforeEach(() => {
-    // TestBedを使ってサービスをセットアップ
+   
     TestBed.configureTestingModule({
       providers: [Network],
     });
-    // サービスをインジェクト（生成）
+    
     service = TestBed.inject(Network);
   });
 
@@ -18,27 +18,24 @@ describe('Network Service', () => {
   });
 
   it('初期値がブラウザの navigator.onLine の状態と一致すること', () => {
-    // テスト実行時のブラウザ本来のオンライン状態と比較する
+  
     expect(service.isOnline()).toBe(navigator.onLine);
   });
 
   it('windowの offline イベントが発生したときに isOnline() が false になること', () => {
-    // offline イベントをシミュレートして発火させる
+    
     window.dispatchEvent(new Event('offline'));
 
-    // RxJS経由でSignalの値が即座に同期され、false になっていることを確認
     expect(service.isOnline()).toBe(false);
   });
 
   it('windowの online イベントが発生したときに isOnline() が true になること', () => {
-    // 一度確実にオフライン状態にする
+    
     window.dispatchEvent(new Event('offline'));
-    expect(service.isOnline()).toBe(false); // （確認用）
+    expect(service.isOnline()).toBe(false); 
 
-    // online イベントをシミュレートして発火させる
     window.dispatchEvent(new Event('online'));
 
-    // Signalの値が true に戻っていることを確認
     expect(service.isOnline()).toBe(true);
   });
 });

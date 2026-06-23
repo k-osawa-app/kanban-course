@@ -9,9 +9,9 @@ describe('App', () => {
     await TestBed.configureTestingModule({
       imports: [App],
       providers:[
-        // Auth が要求されたら、ダミーの mockAuth を渡すように設定
+        
         { provide: Auth, useValue: mockAuth },        
-        // <router-outlet> がエラーにならないように空のルーティング情報を提供
+       
         provideRouter([]) 
       ]
     }).compileComponents();

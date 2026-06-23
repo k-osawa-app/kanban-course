@@ -10,12 +10,11 @@ import { of, throwError } from 'rxjs';
 describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
-  // モック（Spy）の定義
   let mockAuthService: MockedObject<AuthService>;
   let mockRouter: MockedObject<Router>;
 
   beforeEach(async () => {
-    // 依存するサービスのモックを作成
+  
     mockAuthService = {
       login: vi.fn().mockName('CAuth.login'),
     } as unknown as MockedObject<AuthService>;;
@@ -34,7 +33,7 @@ describe('Login', () => {
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
     //await fixture.whenStable();
-    fixture.detectChanges(); // 初期化（ngOnInit相当の処理などを実行）
+    fixture.detectChanges(); 
   });
 
   it('should create', () => {
@@ -76,51 +75,43 @@ describe('Login', () => {
     });
 
     it('ログイン成功時、/dashboard に遷移すること', () => {
-      // フォームに有効な値をセット
+  
       component.loginForm.setValue({
         email: 'test@example.com',
         password: 'password123',
       });
 
-      // モックが成功レスポンスを返すように設定 (of を使用)
       mockAuthService.login.mockReturnValue(of(undefined)); //of({ token: 'dummy-token' })
 
       component.onSubmit();
 
-      // loginメソッドが正しい引数で呼ばれたか確認
       expect(mockAuthService.login).toHaveBeenCalledWith({
         email: 'test@example.com',
         password: 'password123',
       });
 
-      // router.navigateが正しく呼ばれたか確認
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard']);
     });
 
     it('ログイン失敗時、エラーメッセージが表示されること', () => {
-      // テスト時のコンソールエラー出力を抑制するためのスパイ
+   
       vi.spyOn(console, 'error').mockReturnValue(undefined);
 
-      // フォームに有効な値をセット
       component.loginForm.setValue({
         email: 'test@example.com',
         password: 'wrong-password',
       });
 
-      // モックがエラーを返すように設定 (throwError を使用)
       mockAuthService.login.mockReturnValue(throwError(() => new Error('Unauthorized')));
 
       component.onSubmit();
 
       expect(mockAuthService.login).toHaveBeenCalled();
 
-      // エラーメッセージが設定されたか確認
       expect(component.errorMessage).toBe('ログインに失敗しました。入力内容を確認してください。');
 
-      // console.error が呼ばれたか確認
       expect(console.error).toHaveBeenCalled();
 
-      // 失敗時は画面遷移が行われないこと
       expect(mockRouter.navigate).not.toHaveBeenCalled();
     });
   });

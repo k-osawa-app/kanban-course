@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Component } from '@angular/core';
-
-// テスト対象のコンポーネント
 import { Dashboard } from './dashboard';
-// モック化対象の実際のコンポーネント
 import { Sidebar } from '../sidebar/sidebar';
 
-// テスト用のダミーSidebarコンポーネントを作成
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -21,24 +17,20 @@ describe('Dashboard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      // Standalone Componentなので declarations ではなく imports に指定
+   
       imports: [Dashboard],
       providers: [
-        // <router-outlet> のエラーを防ぐためのダミールーティングプロバイダ
         provideRouter([]),
       ],
     })
-      // 実際の Sidebar を MockSidebar に差し替える
       .overrideComponent(Dashboard, {
         remove: { imports: [Sidebar] },
         add: { imports: [MockSidebar] },
       })
       .compileComponents();
 
-    // コンポーネントのインスタンス化
     fixture = TestBed.createComponent(Dashboard);
     component = fixture.componentInstance;
-    // 初期データバインディングの実行（HTMLの描画）
     fixture.detectChanges();
   });
 

@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -17,8 +17,7 @@ import { Observable, switchMap } from 'rxjs';
   selector: 'app-board',
   imports: [CommonModule, DragDropModule, TaskForm ],
   templateUrl: './boardcomponent.html',
-  styleUrl: './boardcomponent.scss',
-  //changeDetection: ChangeDetectionStrategy.Eager
+  styleUrl: './boardcomponent.scss' 
   })
 export class BoardComponent {
   private route = inject(ActivatedRoute); 
@@ -60,8 +59,6 @@ export class BoardComponent {
     return this.filteredTasks().filter(t => t.status === status);
   }
 
-  // ヘルパー関数: ステータスごとにタスクを分ける
-  // computedされた filteredTasks() を使うことで、フィルタリング状態も反映される  
   tasksGroupedByStatus = computed(() => {
     const tasks = this.filteredTasks();
     const grouped: Record<TaskStatus, Task[]> = { todo: [], doing: [], done:[] };
@@ -74,9 +71,6 @@ export class BoardComponent {
     return grouped;
   });
 
-  /**
-   * タスク作成ハンドラ-step5
-   */
   async onTaskCreate(taskData: { title: string; description: string; status: TaskStatus }) {
     if (!this.currentBoardId) return;
     try {
@@ -87,35 +81,22 @@ export class BoardComponent {
       alert('タスクの作成に失敗しました');
     }
   }
-  
-    /**
-   * ドラッグ＆ドロップ イベントハンドラ-step5
-   * @param event CDKから渡されるドロップイベント
-   * @param targetStatus ドロップ先のステータス
-   */
+ 
   drop(event: CdkDragDrop<Task[]>, targetStatus: TaskStatus) {
     if (event.previousContainer === event.container) {
-      // A. 同じリスト内での並べ替え
-      // Firestoreのデータは「配列」ではなく「コレクション」なので、
-      // 厳密な順序保持には別途「order」フィールドが必要ですが、
-      // ここではUI上の並べ替えのみシミュレートします。
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      // B. 別のリスト（ステータス）への移動
+    
       const task = event.previousContainer.data[event.previousIndex];
       
-      // 1. UIを即座に更新 (Optimistic UI)
-      // Angular CDKのtransferArrayItemはローカル配列を書き換えます
-      // ※注意: Firestoreのリアルタイム更新と競合する場合があるため、
-      // 本格的なアプリでは「ローカル更新」と「サーバー更新」の整合性を取る設計が必要です。
-       transferArrayItem(
+      transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
       );
-     // 2. バックエンド更新
-    if (task.id && this.currentBoardId) { //task.id
+    
+    if (task.id && this.currentBoardId) { 
         this.boardService.updateTaskStatus(this.currentBoardId, task.id, targetStatus)
       .catch(err => {
             console.error('更新失敗', err);            

@@ -2,38 +2,32 @@ import type { MockedObject } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-
-// テスト対象のコンポーネントと依存するサービス
 import { Sidebar } from './sidebar';
 import { BoardService } from '../../services/boardservice';
-//import { Board } from '../../models/board.model';
 
 describe('Sidebar', () => {
   let component: Sidebar;
-  let fixture: ComponentFixture<Sidebar>;
-  // BoardServiceのモック（スパイ）を定義
+  let fixture: ComponentFixture<Sidebar>; 
   let mockBoardService: MockedObject<BoardService>;
 
   beforeEach(async () => {
-    // 'getUserBoards' メソッドを持つ BoardService のモックを作成
+
     mockBoardService = {
       getUserBoards: vi.fn().mockName('BoardService.getUserBoards'),
     }  as unknown as MockedObject<BoardService>;
 
     await TestBed.configureTestingModule({
-      // Standalone Componentなので imports に指定
+ 
       imports: [Sidebar],
-      providers: [
-        // RouterLink用（hrefを正しく生成・ルーティングエラー回避のため）
-        provideRouter([]),
-        // コンポーネント内の inject(BoardService) にモックを渡す
+      providers: [  
+        provideRouter([]),      
         { provide: BoardService, useValue: mockBoardService },
       ],
     }).compileComponents();
   });
 
   it('コンポーネントが正常に作成されること', () => {
-    // 空のデータを返すように設定
+  
     mockBoardService.getUserBoards.mockReturnValue(of([]));
 
     fixture = TestBed.createComponent(Sidebar);
@@ -44,33 +38,29 @@ describe('Sidebar', () => {
   });
 
   it('ボードデータが存在する場合、リストとしてリンクが表示されること', () => {
-    // モックデータの準備
+    
     const mockBoards: any = [
       { id: '1', title: 'プロジェクトA' },
       { id: '2', title: 'プロジェクトB' },
     ];
-    // コンポーネント生成前に、サービスがモックデータを返すように設定
+   
     mockBoardService.getUserBoards.mockReturnValue(of(mockBoards));
 
-    // コンポーネントを生成（ここで sidebar.ts 内の getUserBoards() が呼ばれる）
     fixture = TestBed.createComponent(Sidebar);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // HTMLの描画（asyncパイプの解決）
+    fixture.detectChanges(); 
 
-    // HTMLから <li> 要素を取得
     const listItems = fixture.nativeElement.querySelectorAll('li');
 
-    // 2件のボードが描画されているか
     expect(listItems.length).toBe(2);
 
-    // 1件目のリンクの内容と routerLink のパスを検証
     const firstLink = listItems[0].querySelector('a');
     expect(firstLink.textContent.trim()).toBe('プロジェクトA');
     expect(firstLink.getAttribute('href')).toBe('/board/1');
   });
 
   it('ボードデータが空の場合、リスト項目(li)は表示されないこと', () => {
-    // 空の配列を返すように設定
+  
     mockBoardService.getUserBoards.mockReturnValue(of([]));
 
     fixture = TestBed.createComponent(Sidebar);
@@ -79,7 +69,6 @@ describe('Sidebar', () => {
 
     const listItems = fixture.nativeElement.querySelectorAll('li');
 
-    // データがないため <li> は1つも生成されないこと
     expect(listItems.length).toBe(0);
   });
 

@@ -4,13 +4,11 @@ import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import {
-  //getFirestore,
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
   provideFirestore,
-  getFirestore,
-} from '@angular/fire/firestore';
+ } from '@angular/fire/firestore';
 import { provideServiceWorker } from '@angular/service-worker';
 
 const firebaseConfig = {
@@ -32,17 +30,11 @@ export const appConfig: ApplicationConfig = {
     }),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
-    //provideFirestore(() => getFirestore()),
-    // Firestoreの設定を変更：オフライン永続化を有効にする
     provideFirestore(() => {
-      const app = initializeApp(firebaseConfig);
-      // initializeFirestore を使って詳細設定を行う
+      const app = initializeApp(firebaseConfig);      
       return initializeFirestore(app, {
-        // ローカルキャッシュ（IndexedDB）を有効化
-        // persistentMultipleTabManager: 複数タブを開いていても同期が壊れないようにする
         localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
       });
-    }),
-    
+    }),    
   ],
 };

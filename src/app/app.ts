@@ -6,7 +6,6 @@ import { Header } from "./home/header/header";
   selector: 'app-root',
   imports: [RouterOutlet, Header],
   templateUrl: `./app.html`,
-  styleUrl: './app.scss',
-  //changeDetection: ChangeDetectionStrategy.Eager
+  styleUrl: './app.scss'  
 })
 export class App {}

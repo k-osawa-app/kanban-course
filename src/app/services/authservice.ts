@@ -1,22 +1,18 @@
-import { Injectable, inject, Service } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { 
   Auth, 
   authState, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
   signOut, 
-  User,
-  updateProfile
+  User
 } from '@angular/fire/auth';
 import { Observable, from, map } from 'rxjs';
 import { LoginCredentials, SignupCredentials } from '../models/user.model'; 
 import { FirebaseAuthWrapper } from './wrapper/firebaseauth-wrapper'; // 追加
 
-//@Injectable({ providedIn: 'root' })
 @Service()
 export class AuthService {  
   private auth: Auth = inject(Auth);  
-  private fireAuthWrapper = inject(FirebaseAuthWrapper); // 追加
+  private fireAuthWrapper = inject(FirebaseAuthWrapper);
   readonly user$: Observable<User | null> = authState(this.auth);  
   readonly isLoggedIn$: Observable<boolean> = this.user$.pipe(
     map(user => !!user)

@@ -7,7 +7,7 @@ export interface Task {
   title: string;
   description: string;
   status: TaskStatus;
-  assignee?: string;  // 担当者のユーザー名
+  assignee?: string;  
   
   seqNo?: number;
   createdAt?: number;  
@@ -17,8 +17,8 @@ export interface Task {
 export interface Board {
   id: string;
   title: string;
-  ownerId?: string;    // 作成者のUID
-  memberIds?: string[]; // //共有しているメンバーのUID配列
+  ownerId?: string;  
+  memberIds?: string[]; 
   seqNo?: number;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;

@@ -13,7 +13,7 @@
       </div>
       } 
     </div>
-    <!-- メールアドレス -->
+   
     <div class="form-group">
       <label for="email">メールアドレス</label>
       <input id="email" type="email" formControlName="email" placeholder="example@mail.com">
@@ -23,7 +23,7 @@
       </div>
       }
     </div>
-    <!-- パスワード -->
+
     <div class="form-group">
       <label for="password">パスワード</label>
       <input id="password" type="password" formControlName="password" placeholder="6文字以上">
@@ -33,13 +33,13 @@
       </div>
       }
     </div>
-    <!-- サーバーからのエラーメッセージ表示エリア -->
+
     @if(errorMessage){ 
     <div class="global-error">
       {{ errorMessage }}
     </div>
     }
-    <!-- 登録ボタン（フォームが無効なら押せないようにする） -->
+  
     <button type="submit" [disabled]="signupForm.invalid">
       登録する
     </button>

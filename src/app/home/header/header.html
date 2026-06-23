@@ -1,6 +1,6 @@
 <header class="navbar" [class.offline]="!network.isOnline()"> 
       <div class="logo">KanBan</div>
-      <!-- オフライン時の警告バー -->
+   
         @if(!network.isOnline()){ 
            <div class="offline-badge">
            ⚠ オフラインモード (変更は保存され、再接続時に同期されます)

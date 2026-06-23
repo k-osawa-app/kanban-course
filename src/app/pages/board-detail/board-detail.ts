@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router'; 
 import { BoardComponent } from '../board/boardcomponent';
 
@@ -6,7 +6,6 @@ import { BoardComponent } from '../board/boardcomponent';
   selector: 'app-board-detail',
   imports: [ RouterOutlet, RouterLink,BoardComponent],//
   templateUrl: './board-detail.html',
-  styleUrl: './board-detail.scss',
-  //changeDetection: ChangeDetectionStrategy.Eager
+  styleUrl: './board-detail.scss'
 })
 export class BoardDetail {}
