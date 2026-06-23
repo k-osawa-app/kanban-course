@@ -11,7 +11,7 @@ import { Sidebar } from '../sidebar/sidebar';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  template: '<div>Mock Sidebar</div>'
+  template: '<div>Mock Sidebar</div>',
 })
 class MockSidebar {}
 
@@ -25,15 +25,15 @@ describe('Dashboard', () => {
       imports: [Dashboard],
       providers: [
         // <router-outlet> のエラーを防ぐためのダミールーティングプロバイダ
-        provideRouter([]) 
-      ]
+        provideRouter([]),
+      ],
     })
-    // 実際の Sidebar を MockSidebar に差し替える
-    .overrideComponent(Dashboard, {
-      remove: { imports: [Sidebar] },
-      add: { imports: [MockSidebar] }
-    })
-    .compileComponents();
+      // 実際の Sidebar を MockSidebar に差し替える
+      .overrideComponent(Dashboard, {
+        remove: { imports: [Sidebar] },
+        add: { imports: [MockSidebar] },
+      })
+      .compileComponents();
 
     // コンポーネントのインスタンス化
     fixture = TestBed.createComponent(Dashboard);
@@ -49,7 +49,7 @@ describe('Dashboard', () => {
   it('h2タグに「ダッシュボード(マイボード一覧）」と表示されていること', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const h2Element = compiled.querySelector('h2');
-    
+
     expect(h2Element).not.toBeNull();
     expect(h2Element?.textContent?.trim()).toBe('ダッシュボード（マイボード一覧）');
   });
@@ -57,14 +57,14 @@ describe('Dashboard', () => {
   it('テンプレートに <app-sidebar> が存在すること', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const sidebarElement = compiled.querySelector('app-sidebar');
-    
+
     expect(sidebarElement).not.toBeNull();
   });
 
   it('テンプレートに <router-outlet> が存在すること', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const routerOutletElement = compiled.querySelector('router-outlet');
-    
+
     expect(routerOutletElement).not.toBeNull();
   });
 });

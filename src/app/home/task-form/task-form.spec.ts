@@ -10,7 +10,7 @@ describe('TaskForm Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       // Standalone コンポーネントおよび ReactiveFormsModule をインポート
-      imports: [TaskForm, ReactiveFormsModule], 
+      imports: [TaskForm, ReactiveFormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TaskForm);
@@ -24,7 +24,7 @@ describe('TaskForm Component', () => {
 
   describe('フォームの初期状態', () => {
     it('初期状態では title が未入力のためフォームは無効 (invalid) であること', () => {
-      expect(component.myForm.valid).toBeFalse();
+      expect(component.myForm.valid).toBe(false);
     });
 
     it('各コントロールに正しい初期値が設定されていること', () => {
@@ -32,7 +32,7 @@ describe('TaskForm Component', () => {
       expect(formValue).toEqual({
         title: '',
         description: '',
-        status: 'todo' as TaskStatus // TaskStatus の型定義に合わせてアサーション
+        status: 'todo' as TaskStatus, // TaskStatus の型定義に合わせてアサーション
       });
     });
   });
@@ -41,48 +41,48 @@ describe('TaskForm Component', () => {
     it('title が空の場合は必須エラー (required) になること', () => {
       const titleControl = component.titleControl;
       titleControl?.setValue('');
-      expect(titleControl?.hasError('required')).toBeTrue();
-      expect(titleControl?.valid).toBeFalse();
+      expect(titleControl?.hasError('required')).toBe(true);
+      expect(titleControl?.valid).toBe(false);
     });
 
     it('title が3文字未満の場合は minLength エラーになること', () => {
       const titleControl = component.titleControl;
       titleControl?.setValue('ab'); // 2文字
-      expect(titleControl?.hasError('minlength')).toBeTrue();
-      expect(titleControl?.valid).toBeFalse();
+      expect(titleControl?.hasError('minlength')).toBe(true);
+      expect(titleControl?.valid).toBe(false);
     });
 
     it('title が3文字以上の場合は有効 (valid) になること', () => {
       const titleControl = component.titleControl;
       titleControl?.setValue('abc'); // 3文字
-      expect(titleControl?.valid).toBeTrue();
+      expect(titleControl?.valid).toBe(true);
     });
   });
 
   describe('onSubmit() メソッド', () => {
     it('フォームが無効 (invalid) の場合、submitTask は発行されないこと', () => {
       // EventEmitter の emit を監視（スパイ）
-      spyOn(component.submitTask, 'emit');
-      
+      vi.spyOn(component.submitTask, 'emit').mockReturnValue(undefined);
+
       // title が空(invalid)のまま送信
       component.onSubmit();
-      
+
       expect(component.submitTask.emit).not.toHaveBeenCalled();
     });
 
     it('フォームが有効 (valid) の場合、submitTask が発行され、フォームがリセットされること', () => {
-      spyOn(component.submitTask, 'emit');
-      spyOn(component.myForm, 'reset').and.callThrough(); // resetの呼び出しも確認する
+      vi.spyOn(component.submitTask, 'emit').mockReturnValue(undefined);
+      vi.spyOn(component.myForm, 'reset'); // resetの呼び出しも確認する
 
       // フォームを有効な状態にする
       component.myForm.patchValue({
         title: 'テスト用のタスク',
         description: 'これはテストです',
-        status: 'todo' as TaskStatus
+        status: 'todo' as TaskStatus,
       });
 
       // フォームが有効になっているか念の為確認
-      expect(component.myForm.valid).toBeTrue();
+      expect(component.myForm.valid).toBe(true);
 
       component.onSubmit();
 
@@ -90,7 +90,7 @@ describe('TaskForm Component', () => {
       expect(component.submitTask.emit).toHaveBeenCalledWith({
         title: 'テスト用のタスク',
         description: 'これはテストです',
-        status: 'todo' as TaskStatus
+        status: 'todo' as TaskStatus,
       });
 
       // フォームがリセットされたか

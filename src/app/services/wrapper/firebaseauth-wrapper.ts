@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Service } from '@angular/core';
 import {
   Auth,
   authState,
@@ -11,7 +11,8 @@ import {
 } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+//@Injectable({ providedIn: 'root' })
+@Service()
 export class FirebaseAuthWrapper{
   // authState のラッパー
   getAuthState(auth: Auth): Observable<User | null> {

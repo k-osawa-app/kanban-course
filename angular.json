@@ -34,10 +34,18 @@
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                 "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                 },
+                "fonts": true
+                },
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "800kB",
                   "maximumError": "1MB"
                 },
                 {
@@ -70,10 +78,7 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "runner": "karma"
-          }
+         "builder": "@angular/build:unit-test"
         },
         "cypress-run": {
           "builder": "@cypress/schematic:cypress",

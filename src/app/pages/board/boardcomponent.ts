@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -18,7 +18,8 @@ import { Observable, switchMap } from 'rxjs';
   imports: [CommonModule, DragDropModule, TaskForm ],
   templateUrl: './boardcomponent.html',
   styleUrl: './boardcomponent.scss',
-})
+  //changeDetection: ChangeDetectionStrategy.Eager
+  })
 export class BoardComponent {
   private route = inject(ActivatedRoute); 
   private boardService = inject(BoardService); 

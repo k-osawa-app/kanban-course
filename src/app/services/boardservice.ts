@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, Service } from '@angular/core';
 import { 
   Firestore, 
   collection, 
@@ -15,9 +15,10 @@ import { Board, Task, TaskStatus } from '../models/board.model';
 import { AuthService } from './authservice'; 
 import { FirestoreWrapper } from './wrapper/firestore-wrapper'; 
 
-@Injectable({
-  providedIn: 'root'
-})
+// @Injectable({
+//   providedIn: 'root'
+// })
+@Service()
 export class BoardService {
   private firestore = inject(Firestore);
   private authService = inject(AuthService);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Sidebar } from '../sidebar/sidebar';
 
@@ -7,5 +7,6 @@ import { Sidebar } from '../sidebar/sidebar';
   imports: [ RouterOutlet, Sidebar],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
+  //changeDetection: ChangeDetectionStrategy.Eager
 })
 export class Dashboard {}

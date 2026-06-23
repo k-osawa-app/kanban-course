@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,7 +9,8 @@ import { SignupCredentials } from '../../models/user.model';
   selector: 'app-signup',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './signup.html',
-  styleUrl: './signup.scss'
+  styleUrl: './signup.scss',
+  //changeDetection: ChangeDetectionStrategy.Eager
 })
 export class Signup {  
   private fb = inject(FormBuilder);

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ import { AuthService } from '../../services/authservice';
   selector: 'app-login',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: `./login.html`,
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
+  //changeDetection: ChangeDetectionStrategy.Eager
 })
 export class Login {
   private fb = inject(FormBuilder);

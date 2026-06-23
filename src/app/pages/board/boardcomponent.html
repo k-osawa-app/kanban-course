@@ -1,56 +1,48 @@
-   <div class="board-header">
-       <button (click)="isModalOpen.set(true)">+ タスク追加</button>    
+<div class="board-header">
+  <button (click)="isModalOpen.set(true)">+ タスク追加</button>
+</div>
+
+@if (isModalOpen()) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <h3>新しいタスク</h3>
+      <app-task-form (submitTask)="onTaskCreate($event)" (cancel)="isModalOpen.set(false)" />
     </div>
-  
-    @if(isModalOpen()){
-      <div class="modal-overlay">
-       <div class="modal-content">
-        <h3>新しいタスク</h3>
-        <app-task-form 
-          (submitTask)="onTaskCreate($event)"
-          (cancel)="isModalOpen.set(false)">
-        </app-task-form>
-       </div>
-      </div>
-      } 
-  
-  @if( tasksSignal().length >0 ){                
-    <div class="toolbar">        
-        <label>
-          <input type="checkbox" 
-            [checked]="onlyMyTasks()" 
-            (change)="toggleFilter($event)" />
-          自分のみ表示
+  </div>
+}
+
+@if (tasksSignal().length > 0) {
+  <div class="toolbar">
+    <label>
+      <input type="checkbox" [checked]="onlyMyTasks()" (change)="toggleFilter($event)" />
+      自分のみ表示
     </label>
-     
-      </div>  
-       <!-- カンバンボードエリア -->   
-    <div class="kanban-board" cdkDropListGroup>     
-      @for(status of statuses; track status){
-        <div class="column" >
-            <h3>{{ status | uppercase }}</h3>  
-          <div 
-          cdkDropList           
+  </div>
+  <!-- カンバンボードエリア -->
+  <div class="kanban-board" cdkDropListGroup>
+    @for (status of statuses; track status) {
+      <div class="column">
+        <h3>{{ status | uppercase }}</h3>
+        <div
+          cdkDropList
           [cdkDropListData]="tasksGroupedByStatus()[status] || []"
           (cdkDropListDropped)="drop($event, status)"
-           class="task-list">             
-
-          @for(task of (tasksGroupedByStatus()[status] || []); track task.id ){
-           <div class="card" cdkDrag>
-            <h4>{{ task.title }}</h4>
-            <p>{{ task.description }}</p>
-            <div class="card-footer">
-              <span class="assignee">{{ task.assignee }}</span>
+          class="task-list"
+        >
+          @for (task of tasksGroupedByStatus()[status] || []; track task.id) {
+            <div class="card" cdkDrag>
+              <h4>{{ task.title }}</h4>
+              <p>{{ task.description }}</p>
+              <div class="card-footer">
+                <span class="assignee">{{ task.assignee }}</span>
+              </div>
+              <div *cdkDragPlaceholder class="custom-placeholder">In Here</div>
             </div>
-             <div *cdkDragPlaceholder class="custom-placeholder">In Here</div>
-           </div>
           } @empty {
-            <div class="empty-placeholder">
-              タスクはありません
-            </div>
+            <div class="empty-placeholder">タスクはありません</div>
           }
-         </div>        
-      </div> 
-     }
-    </div>
-  }
+        </div>
+      </div>
+    }
+  </div>
+}

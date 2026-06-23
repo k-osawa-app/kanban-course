@@ -3,15 +3,17 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { 
-  //getFirestore, 
-  initializeFirestore, 
-  persistentLocalCache, 
-  persistentMultipleTabManager, 
-  provideFirestore } from '@angular/fire/firestore';
+import {
+  //getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  provideFirestore,
+  getFirestore,
+} from '@angular/fire/firestore';
 import { provideServiceWorker } from '@angular/service-worker';
 
-const firebaseConfig = {      
+const firebaseConfig = {
   // apiKey: "",
   // authDomain: "",
   // projectId: "",
@@ -38,8 +40,9 @@ export const appConfig: ApplicationConfig = {
       return initializeFirestore(app, {
         // ローカルキャッシュ（IndexedDB）を有効化
         // persistentMultipleTabManager: 複数タブを開いていても同期が壊れないようにする
-        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
       });
-    })
+    }),
+    
   ],
 };

@@ -3,11 +3,6 @@ import { authGuard } from './services/auth.guard'; // インポート追加
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
     path: 'login',
     loadComponent: () => 
       import('./pages/login/login').then(m => m.Login)
@@ -28,6 +23,11 @@ export const routes: Routes = [
     loadComponent: () => 
       import('./pages/board-detail/board-detail').then(m => m.BoardDetail),
     canActivate: [authGuard] 
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   {
     path: '**',

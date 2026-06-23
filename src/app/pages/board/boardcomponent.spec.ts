@@ -1,3 +1,4 @@
+import type { MockedObject } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BoardComponent } from './boardcomponent';
 import { BoardService } from '../../services/boardservice';
@@ -9,47 +10,47 @@ import { Task, Board } from '../../models/board.model';
 describe('Board Component', () => {
   let component: BoardComponent;
   let fixture: ComponentFixture<BoardComponent>;
-  let mockBoardService: jasmine.SpyObj<BoardService>;
-  
+  let mockBoardService: MockedObject<BoardService>;
+
   // URLパラメータをテストごとに切り替えられるように BehaviorSubject を使う
   let paramMapSubject: BehaviorSubject<any>;
 
-  const mockIBoards: Board[]=[
-    { id: 'board-123', title: 'SBoard 1',ownerId: 'My Board'},
-  ] 
+  const mockIBoards: Board[] = [{ id: 'board-123', title: 'SBoard 1', ownerId: 'My Board' }];
 
-  const mockTasks: Task[] =[
+  const mockTasks: Task[] = [
     { id: '1', title: 'Task 1', description: '', status: 'todo', assignee: 'Me' },
     { id: '2', title: 'Task 2', description: '', status: 'doing', assignee: 'Other' },
-    { id: '3', title: 'Task 3', description: '', status: 'done', assignee: 'Me' }
+    { id: '3', title: 'Task 3', description: '', status: 'done', assignee: 'Me' },
   ];
 
   beforeEach(async () => {
     // サービスのモック化
-    mockBoardService = jasmine.createSpyObj('BoardService', ['getUserBoards', 'getTasks']);
-    
+    mockBoardService = {
+      getUserBoards: vi.fn().mockName('BoardService.getUserBoards'),
+      getTasks: vi.fn().mockName('BoardService.getTasks'),
+    } as unknown as MockedObject<BoardService>;
+
     // デフォルトのモック戻り値
-    mockBoardService.getUserBoards.and.returnValue(of(mockIBoards));//[{id: 'board-123', name: 'My Board' }]
-    mockBoardService.getTasks.and.returnValue(of(mockTasks));
+    mockBoardService.getUserBoards.mockReturnValue(of(mockIBoards)); //[{id: 'board-123', name: 'My Board' }]
+    mockBoardService.getTasks.mockReturnValue(of(mockTasks));
 
     // ルーティングパラメータのモック
     paramMapSubject = new BehaviorSubject(convertToParamMap({})); // 初期状態はパラメータなし new Map()
 
     await TestBed.configureTestingModule({
-      imports: [ BoardComponent ], // Standaloneコンポーネントなのでimports,NoopAnimationsModule
-      providers:[
+      imports: [BoardComponent], // Standaloneコンポーネントなのでimports,NoopAnimationsModule
+      providers: [
         { provide: BoardService, useValue: mockBoardService },
         { provide: Firestore, useValue: {} }, // 簡易的なモック
         {
           provide: ActivatedRoute,
-          useValue: { paramMap: paramMapSubject.asObservable() }
-        }
-      ]
+          useValue: { paramMap: paramMapSubject.asObservable() },
+        },
+      ],
     }).compileComponents();
 
-
-     fixture = TestBed.createComponent(BoardComponent);
-     component = fixture.componentInstance;
+    fixture = TestBed.createComponent(BoardComponent);
+    component = fixture.componentInstance;
 
     // fixture.detectChanges() をここで呼ぶと、初期化ストリームが走ります
   });
@@ -79,10 +80,9 @@ describe('Board Component', () => {
 
       // 4. Computed Signal (tasksGroupedByStatus) の評価が正しいか確認
       const grouped = component.tasksGroupedByStatus();
-      expect(grouped['todo'].length).toBe(1);   // Task 1
-      expect(grouped['doing'].length).toBe(1);  // Task 2
-      expect(grouped['done'].length).toBe(1);   // Task 3
-
+      expect(grouped['todo'].length).toBe(1); // Task 1
+      expect(grouped['doing'].length).toBe(1); // Task 2
+      expect(grouped['done'].length).toBe(1); // Task 3
 
       //expect(mockBoardService.getUserBoards).not.toHaveBeenCalled();
       // expect(mockBoardService.getTasks).toHaveBeenCalledWith('board-123');
@@ -100,13 +100,13 @@ describe('Board Component', () => {
 
       // Setup: パラメータに 'id' をセットしてから初期化
       //paramMapSubject.next(new Map([['id', 'some-id']]));
-      //paramMapSubject.next(convertToParamMap({id:'board-123' }));//id: 'some-id' 
+      //paramMapSubject.next(convertToParamMap({id:'board-123' }));//id: 'some-id'
 
       // 念のため呼び出し履歴をクリア
-      mockBoardService.getTasks.calls.reset();
+      mockBoardService.getTasks.mockClear();
 
       // 1. Setup: パラメータは空のままにする（beforeEachの初期状態のまま）
-      
+
       // 2. 初期化
       fixture.detectChanges();
 
@@ -114,7 +114,7 @@ describe('Board Component', () => {
       expect(mockBoardService.getTasks).not.toHaveBeenCalled();
 
       // 4. タスクのSignalは空配列であること
-      expect(component.tasksSignal()).toEqual([]); 
+      expect(component.tasksSignal()).toEqual([]);
 
       // fixture = TestBed.createComponent(BoardComponent);
       // component = fixture.componentInstance;
@@ -132,15 +132,15 @@ describe('Board Component', () => {
       //   // [{ id: '1', title: 'Task 1', description: '', status: 'todo', assignee: 'Me' },
       //   //  { id: '2', title: 'Task 2', description: '', status: 'doing', assignee: 'Other' },
       //   //  { id: '3', title: 'Task 3', description: '', status: 'done', assignee: 'Me' }
-      //   // ]      
+      //   // ]
       // ); // 空配列であること
     });
   });
 
   describe('3. フィルタリング (onlyMyTasks) のテスト', () => {
     beforeEach(() => {
-       // 【追加】コンポーネントがタスクを取得できるように、URLパラメータを設定する
-       // ※ 'id' や 'boardId' など、実際のコンポーネントの params.get(...) に合わせてキー名を変更してください。
+      // 【追加】コンポーネントがタスクを取得できるように、URLパラメータを設定する
+      // ※ 'id' や 'boardId' など、実際のコンポーネントの params.get(...) に合わせてキー名を変更してください。
       paramMapSubject.next(convertToParamMap({ id: 'board-123' }));
 
       fixture.detectChanges(); // まずタスクを読み込ませる
@@ -148,10 +148,10 @@ describe('Board Component', () => {
 
     it('toggleFilter() によって "onlyMyTasks" の状態が切り替わること', () => {
       const mockEvent = { target: { checked: true } } as unknown as Event;
-      
+
       component.toggleFilter(mockEvent);
-      
-      expect(component.onlyMyTasks()).toBeTrue();
+
+      expect(component.onlyMyTasks()).toBe(true);
     });
 
     it('"自分のみ表示" がONの場合、担当者が "Me" のタスクのみに絞り込まれること', () => {
@@ -163,7 +163,7 @@ describe('Board Component', () => {
 
       // 担当者が 'Me' の Task 1 (todo) と Task 3 (done) だけになる
       expect(component.filteredTasks().length).toBe(2);
-      
+
       const grouped = component.tasksGroupedByStatus();
       expect(grouped['todo'].length).toBe(1);
       expect(grouped['doing'].length).toBe(0); // Other担当なので消える

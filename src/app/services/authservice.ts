@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, Service } from '@angular/core';
 import { 
   Auth, 
   authState, 
@@ -12,7 +12,8 @@ import { Observable, from, map } from 'rxjs';
 import { LoginCredentials, SignupCredentials } from '../models/user.model'; 
 import { FirebaseAuthWrapper } from './wrapper/firebaseauth-wrapper'; // 追加
 
-@Injectable({ providedIn: 'root' })
+//@Injectable({ providedIn: 'root' })
+@Service()
 export class AuthService {  
   private auth: Auth = inject(Auth);  
   private fireAuthWrapper = inject(FirebaseAuthWrapper); // 追加

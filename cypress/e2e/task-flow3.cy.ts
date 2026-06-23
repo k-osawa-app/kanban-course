@@ -16,13 +16,12 @@ describe('KanBan-Course Task Flow', () => {
     cy.url().should('include', '/dashboard');
     cy.contains('ダッシュボード（マイボード一覧）').should('be.visible');
 
-    // 3. ボードを選択
-    cy.contains('事務所内作業').click();
+    // 3.  ログアウト処理
+    //cy.get('button[type="submit"]').click();
+    cy.contains('ログアウト').click();   
 
-    
-    // 2. ダッシュボード遷移の確認
-     cy.contains('← ダッシュボードへ戻る').click();   
-     cy.contains('ダッシュボード（マイボード一覧）').should('be.visible');
+    //  4. ストップ
+    //Cypress.stop()
 
   });
 });
