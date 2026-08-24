@@ -12,6 +12,7 @@ import {
 import { provideServiceWorker } from '@angular/service-worker';
 
 const firebaseConfig = {
+
   // apiKey: "",
   // authDomain: "",
   // projectId: "",
