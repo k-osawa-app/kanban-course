@@ -8,6 +8,8 @@
 .column { 
     flex: 1; 
     min-width: 200px; 
+    min-height: 100vh; /* または calc(100vh - ヘッダーの高さ) */
+    overflow-y: auto;    /* はみ出た場合はスクロール */    
     background: #f4f5f7; 
     padding: 1rem; 
     border-radius: 8px; 
